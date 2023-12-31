@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Sidebar from "../sidebar/Sidebar";
 import "./navbar.scss";
 
@@ -7,7 +8,13 @@ const Navbar = () => {
       {/* Sidebar */}
       <Sidebar />
       <div className="wrapper">
-        <span>Aminur Rahman</span>
+        <motion.span
+          initial={{ opacity: 0, scale: 0.2 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          Aminur Rahman
+        </motion.span>
         <div className="social">
           <a href="#">
             <img src="./github.png" alt="" />
