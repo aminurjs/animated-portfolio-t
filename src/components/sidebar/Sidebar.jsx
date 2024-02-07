@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ToggleButton from "./toggleButton/ToggleButton";
 import Links from "./links/Links";
 import "./sidebar.scss";
+import { useOnClickOutside } from "../../hooks/use-on-click-outside";
 
 const variants = {
   open: {
@@ -26,8 +27,29 @@ const variants = {
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "Escape") {
+        setOpen(null);
+      }
+    };
+
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  }, []);
+
+  const navRef = useRef(null);
+  useOnClickOutside(navRef, () => setOpen(false));
+
   return (
-    <motion.div className="sidebar" animate={open ? "open" : "closed"}>
+    <motion.div
+      className="sidebar"
+      initial="closed"
+      animate={open ? "open" : "closed"}
+      ref={navRef}
+    >
       <motion.div className="bg" variants={variants}>
         <Links />
         <ToggleButton setOpen={setOpen} />
